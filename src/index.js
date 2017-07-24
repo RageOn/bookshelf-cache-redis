@@ -103,9 +103,9 @@ module.exports = (bookshelf, settings) => {
   // Disable plugin if there is no Redis instance.
   if (settings.hasOwnProperty('disabled') && settings.disabled === true) {
     disabled = true;
-    strapi.log.warn('The plugin has been loaded but he is disabled.');
-  } else if (redis && redis.constructor.name !== 'Redis') {
-    return strapi.log.error('You need to specify a Redis instance object.');
+    console.warn('The plugin has been loaded but he is disabled.');
+  } else if (!redis || redis.constructor.name.toLowerCase().indexOf('redis') === 1) {
+    throw new Error('You need to specify a Redis instance object.');
   }
 
   bookshelf.Model.prototype.fetchAllCache = function(options) {
